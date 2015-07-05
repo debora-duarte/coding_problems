@@ -5,3 +5,4 @@ ruby '2.1.5'
 
 gem 'rspec'
 gem 'guard'
+gem 'guard-rspec', require: false
