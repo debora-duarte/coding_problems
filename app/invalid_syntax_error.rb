@@ -1,0 +1,2 @@
+class InvalidSyntaxError < StandardError
+end
