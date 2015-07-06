@@ -7,21 +7,25 @@ class RomanConverter
                             'D' => 500, 
                             'M' =>1000 }
 
-  def self.convert(roman_number)
-    raise InvalidSyntaxError if invalid?(roman_number)
-    calculate(roman_number)
+  def self.convert(roman_numeral)
+    raise InvalidSyntaxError if invalid?(roman_numeral)
+    calculate(roman_numeral)
   end
 
-  def self.invalid?(roman_number)
-    invalid_groups?(roman_number) || any_invalid_pair?(roman_number)
+  def self.invalid?(roman_numeral)
+    invalid_chars?(roman_numeral) || invalid_groups?(roman_numeral) || any_invalid_pair?(roman_numeral)
   end
 
-  def self.invalid_groups?(roman_number)
-    roman_number.match(/(IIII|XXXX|CCCC|MMMM|VV|LL|DD)/)
+  def self.invalid_chars?(roman_numeral)
+    roman_numeral.each_char.detect { |c| !@@roman_digits_table.keys.include?(c) }
   end
 
-  def self.any_invalid_pair?(roman_number)
-    roman_number.each_char.each_cons(2).detect do |a|
+  def self.invalid_groups?(roman_numeral)
+    roman_numeral.match(/(IIII|XXXX|CCCC|MMMM|VV|LL|DD)/)
+  end
+
+  def self.any_invalid_pair?(roman_numeral)
+    roman_numeral.each_char.each_cons(2).detect do |a|
        invalid_pair?(a[0], a[1])        
     end
   end
@@ -35,15 +39,14 @@ class RomanConverter
     @@roman_digits_table[i2] > @@roman_digits_table[i1]
   end
 
-  def self.calculate(roman_number)
-    value = roman_number.each_char.each_cons(2).inject(0) do |sum, a|
+  def self.calculate(roman_numeral)
+    value = roman_numeral.each_char.each_cons(2).inject(0) do |sum, a|
       if crescent_pair?(a[0], a[1])
-        #require 'byebug'; byebug  
         sum -= @@roman_digits_table[a[0]]
       else
         sum += @@roman_digits_table[a[0]]
       end
     end
-    value += @@roman_digits_table[roman_number[-1]]      
+    value += @@roman_digits_table[roman_numeral[-1]]      
   end
 end
