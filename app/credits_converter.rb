@@ -13,14 +13,14 @@ class CreditsConverter
   end
 
   def add_to_credits_conversion_table(words, number)
-    credit_words = find_credit_words(words)
+    credit_words = separate_credit_words(words)
     words = find_words(words)
     roman_numerals = convert_words_to_roman_numerals(words)
     conversion_roman_numeral = RomanConverter.convert(roman_numerals)
     credits_conversion_table[credit_words] = number.to_f / conversion_roman_numeral    
   end
 
-  def find_credit_words(words)
+  def separate_credit_words(words)
     words.detect { |word| !roman_conversion_table.include?(word) }
   end
 
@@ -38,9 +38,14 @@ class CreditsConverter
   end
 
   def convert_to_credits(words)
-    require 'byebug'; byebug
     number = convert_to_number(words)
     credit_word = find_credit_words(words)
     number * credits_conversion_table[credit_word]
+  end
+
+  def find_credit_words(words)
+    word = words.detect { |word| credits_conversion_table.include?(word) }
+    raise InvalidSyntaxError unless word
+    word
   end
 end

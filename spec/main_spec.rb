@@ -15,8 +15,18 @@ RSpec.describe 'Main' do
     subject.input('pish pish Iron is 3910 Credits')
   end
 
-  it 'should raise a sintax error' do
-    expect(subject.input('glob is A')).to eq('I have no idea what you are talking about')
+  describe 'Syntax errors' do
+    it 'should raise invalid syntax error' do
+      expect{ subject.input('prok pish Silver is 34 Credits') }.to raise_error(InvalidSyntaxError)
+    end
+
+    it 'should raise invalid syntax error' do
+      expect{ subject.input('how many Credits is glob prok Copper ?') }.to raise_error(InvalidSyntaxError)
+    end  
+
+    it 'should answer I have no idea what you are talking about' do
+      expect(subject.input('glob is A')).to eq('I have no idea what you are talking about')
+    end
   end
 
   it 'should answer corretly how much is pish tegj glob glob' do
