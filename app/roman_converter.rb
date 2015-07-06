@@ -1,5 +1,5 @@
 class RomanConverter
-  @@roman_digits_table = {  'I' => 1, 
+  ROMAN_NUMERALS_TABLE = {  'I' => 1, 
                             'V' => 5, 
                             'X' => 10, 
                             'L' => 50, 
@@ -17,7 +17,7 @@ class RomanConverter
   end
 
   def self.invalid_chars?(roman_numeral)
-    roman_numeral.each_char.detect { |c| !@@roman_digits_table.keys.include?(c) }
+    roman_numeral.each_char.detect { |c| !ROMAN_NUMERALS_TABLE.keys.include?(c) }
   end
 
   def self.invalid_groups?(roman_numeral)
@@ -30,23 +30,23 @@ class RomanConverter
     end
   end
 
-  def self.invalid_pair?(d1, d2)
+  def self.invalid_pair?(n1, n2)
     permitted_crescent_pairs = ['IV', 'IX', 'XL', 'XC', 'CD', 'CM']
-    crescent_pair?(d1, d2) && !permitted_crescent_pairs.include?(d1 + d2)
+    crescent_pair?(n1, n2) && !permitted_crescent_pairs.include?(n1 + n2)
   end
 
-  def self.crescent_pair?(i1, i2)
-    @@roman_digits_table[i2] > @@roman_digits_table[i1]
+  def self.crescent_pair?(n1, n2)
+    ROMAN_NUMERALS_TABLE[n2] > ROMAN_NUMERALS_TABLE[n1]
   end
 
   def self.calculate(roman_numeral)
     value = roman_numeral.each_char.each_cons(2).inject(0) do |sum, a|
       if crescent_pair?(a[0], a[1])
-        sum -= @@roman_digits_table[a[0]]
+        sum -= ROMAN_NUMERALS_TABLE[a[0]]
       else
-        sum += @@roman_digits_table[a[0]]
+        sum += ROMAN_NUMERALS_TABLE[a[0]]
       end
     end
-    value += @@roman_digits_table[roman_numeral[-1]]      
+    value += ROMAN_NUMERALS_TABLE[roman_numeral[-1]]      
   end
 end
