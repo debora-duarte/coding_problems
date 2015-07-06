@@ -29,7 +29,7 @@ class CreditsConverter
   end
 
   def convert_words_to_roman_numerals(words)
-    words.map { |word| roman_conversion_table[word] }.join
+    find_words(words).map { |word| roman_conversion_table[word] }
   end
 
   def convert_to_number(words)
@@ -38,6 +38,7 @@ class CreditsConverter
   end
 
   def convert_to_credits(words)
+    require 'byebug'; byebug
     number = convert_to_number(words)
     credit_word = find_credit_words(words)
     number * credits_conversion_table[credit_word]

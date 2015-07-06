@@ -17,15 +17,15 @@ class RomanConverter
   end
 
   def self.invalid_chars?(roman_numeral)
-    roman_numeral.each_char.detect { |c| !ROMAN_NUMERALS_TABLE.keys.include?(c) }
+    roman_numeral.detect { |c| !ROMAN_NUMERALS_TABLE.keys.include?(c) }
   end
 
   def self.invalid_groups?(roman_numeral)
-    roman_numeral.match(/(IIII|XXXX|CCCC|MMMM|VV|LL|DD)/)
+    roman_numeral.join.match(/(IIII|XXXX|CCCC|MMMM|VV|LL|DD)/)
   end
 
   def self.any_invalid_pair?(roman_numeral)
-    roman_numeral.each_char.each_cons(2).detect do |a|
+    roman_numeral.each_cons(2).detect do |a|
        invalid_pair?(a[0], a[1])        
     end
   end
@@ -40,7 +40,7 @@ class RomanConverter
   end
 
   def self.calculate(roman_numeral)
-    value = roman_numeral.each_char.each_cons(2).inject(0) do |sum, a|
+    value = roman_numeral.each_cons(2).inject(0) do |sum, a|
       if crescent_pair?(a[0], a[1])
         sum -= ROMAN_NUMERALS_TABLE[a[0]]
       else
